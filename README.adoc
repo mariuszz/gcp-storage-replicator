@@ -1,0 +1,12 @@
+= GCP Storage Replicator
+
+A tool for copying files between buckets with simultaneous compression.
+
+== set destination bucket name
+ $ vi env-vars.yaml
+
+== build executable jar
+ $ ./gradlew shadowJar
+
+== deploy on google cloud
+ $ gcloud functions deploy replicator_function --gen2 --source=build/libs/ --entry-point com.zamolski.storagereplicator.ReplicatorFunction --env-vars-file env-vars.yaml --runtime java17 --memory=256MB --max-instances=5 --region europe-central2 --trigger-event-filters="type=google.cloud.storage.object.v1.finalized" --trigger-event-filters="bucket=mz-blogasek-src"
